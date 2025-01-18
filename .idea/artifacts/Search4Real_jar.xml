@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Search4Real:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Search4Real_jar</output-path>
+    <root id="archive" name="Search4Real.jar">
+      <element id="module-output" name="Search4Real" />
+    </root>
+  </artifact>
+</component>
