@@ -24,15 +24,18 @@ public class CrawlContainer {
     }
 
     public synchronized String deQueue() {
+        if(queue.isEmpty()) return null;
         return queue.remove();
     }
 
-    public synchronized void insertVisitedSet(String site) {
-        visitedSites.add(site);
+    private synchronized boolean isSiteVisited(String site) {
+        return visitedSites.contains(site);
     }
 
-    public synchronized boolean isSiteVisited(String site) {
-        return visitedSites.contains(site);
+    public synchronized boolean insertIfNotPresent(String site) {
+        if(isSiteVisited(site)) return false;
+        visitedSites.add(site);
+        return true;
     }
 
 }
