@@ -8,6 +8,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class Crawler {
     public static void main(String[] args) throws Exception{
@@ -34,7 +36,7 @@ class Worker extends Thread {
     public void run() {
         Connection db = Db.getConnection();
         CrawlContainer container = CrawlContainer.getInstance();
-        int maxTries = 10;
+        int maxTries = 100;
 
         while(maxTries > 0) {
             String currSite = container.deQueue();
@@ -63,6 +65,14 @@ class Worker extends Thread {
 
                 String bodyText = doc.body().text().replaceAll("[^A-Za-z0-9]"," ");
 
+                PreparedStatement sql = db.prepareStatement("INSERT INTO public.\"Sites\" (link,title,\"desc\",words) VALUES (?,?,?,?)");
+                sql.setString(1,currSite);
+                sql.setString(2,title);
+                sql.setString(3,desc == null ? "" : desc);
+                sql.setString(4,bodyText);
+                sql.execute();
+
+
                 Elements anchorTags = doc.select("a");
                 for(Element a : anchorTags) {
                     String absURL = a.attr("abs:href");
@@ -72,7 +82,7 @@ class Worker extends Thread {
                     }
                 }
                 Thread.sleep(100);
-            } catch (IOException | InterruptedException e) {
+            } catch (IOException | InterruptedException | SQLException e) {
                 e.printStackTrace();
             }
 
