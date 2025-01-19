@@ -1,0 +1,38 @@
+package com.aahilrafiq.helpers;
+
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class CrawlContainer {
+    private final Queue<String> queue;
+    private final HashSet<String> visitedSites;
+    private static CrawlContainer container;
+
+    private CrawlContainer() {
+        this.queue = new LinkedList<>();
+        this.visitedSites = new HashSet<>();
+    }
+
+    public static CrawlContainer getInstance() {
+        if(container == null) container = new CrawlContainer();
+        return container;
+    }
+
+    public synchronized void enQueue(String site) {
+        queue.add(site);
+    }
+
+    public synchronized String deQueue() {
+        return queue.remove();
+    }
+
+    public synchronized void insertVisitedSet(String site) {
+        visitedSites.add(site);
+    }
+
+    public synchronized boolean isSiteVisited(String site) {
+        return visitedSites.contains(site);
+    }
+
+}
