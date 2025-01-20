@@ -1,4 +1,4 @@
-package com.aahilrafiq.helpers;
+package com.aahilrafiq.helpers.crawling;
 
 import java.util.HashSet;
 import java.util.LinkedList;
