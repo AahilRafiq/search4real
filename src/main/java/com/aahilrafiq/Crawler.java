@@ -6,7 +6,7 @@ import com.aahilrafiq.helpers.crawling.Worker;
 public class Crawler {
     public static void main(String[] args) throws Exception{
         CrawlContainer container = CrawlContainer.getInstance();
-        container.enQueue("https://github.com/");
+        container.enQueue("https://en.wikipedia.org/wiki/List_of_most-visited_websites");
 
         final int numThreads = 10;
         Worker[] workers = new Worker[numThreads];
