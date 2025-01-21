@@ -17,6 +17,7 @@ public class FilterNStore {
         Connection db = Db.getPostgresConnection();
 
         // 1. Remove special characters
+        String rawTitle = title;
         title = title.replaceAll("[^A-Za-z0-9]"," ");
         if(desc!=null) desc = desc.replaceAll("[^A-Za-z0-9]"," ");
         words = words.replaceAll("[^A-Za-z0-9]"," ");
@@ -42,11 +43,12 @@ public class FilterNStore {
         words = Arrays.stream(words.split("\\s+")).filter(word -> !stopWordsSet.contains(word.toLowerCase())).collect(Collectors.joining(" "));
 
         try {
-            PreparedStatement sql = db.prepareStatement("INSERT INTO public.\"Sites\" (link,title,description,words) VALUES (?,?,?,?)");
-            sql.setString(1,link);
-            sql.setString(2,title);
-            sql.setString(3,desc == null ? "" : desc);
-            sql.setString(4,words);
+            PreparedStatement sql = db.prepareStatement("INSERT INTO public.\"Sites\" (link,title,rawtitle,description,words) VALUES (?,?,?,?,?)");
+            sql.setString(1,link.toLowerCase());
+            sql.setString(2,title.toLowerCase());
+            sql.setString(3,rawTitle);
+            sql.setString(4,desc == null ? "" : desc.toLowerCase());
+            sql.setString(5,words.toLowerCase());
             sql.execute();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
