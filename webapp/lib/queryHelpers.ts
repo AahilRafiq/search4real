@@ -35,6 +35,9 @@ const getPgPool = () => {
       database: process.env.POSTGRES_DATABASE,
       password: process.env.POSTGRES_PASSWORD,
       port: parseInt(process.env.POSTGRES_PORT || '5432'),
+      ssl: {
+        rejectUnauthorized: false // Set to true in production if you have valid certificates
+      }
     })
   }
   return pgPool
