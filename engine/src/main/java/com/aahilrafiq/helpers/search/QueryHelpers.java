@@ -1,12 +1,5 @@
 package com.aahilrafiq.helpers.search;
 
-import com.aahilrafiq.helpers.search.ResponseObj;
-import com.aahilrafiq.db.Db;
-import org.neo4j.driver.Driver;
-import org.neo4j.driver.Record;
-import org.neo4j.driver.Result;
-import org.neo4j.driver.Session;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,7 +8,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.neo4j.driver.Driver;
+import org.neo4j.driver.Record;
+import org.neo4j.driver.Result;
+import org.neo4j.driver.Session;
 import static org.neo4j.driver.Values.parameters;
+
+import com.aahilrafiq.db.Db;
 
 public class QueryHelpers {
     public static List<ResponseObj> getResults(String query) {

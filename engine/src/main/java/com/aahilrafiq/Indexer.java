@@ -27,7 +27,7 @@ public class Indexer {
             while (processedSites < totalSites) {
                 // Get batch of sites
                 try (PreparedStatement sql = db.prepareStatement(
-                        "select id,title,description,words from public.\"Sites\" offset ? limit ?")) {
+                        "select id,title,description from public.\"Sites\" offset ? limit ?")) {
                     sql.setInt(1, skipCnt);
                     sql.setInt(2, limitCnt);
 
@@ -39,7 +39,6 @@ public class Indexer {
                                     int id = sites.getInt(1);
                                     String title = sites.getString(2);
                                     String desc = sites.getString(3);
-                                    String words = sites.getString(4);
 
                                     // Create site node
                                     tx.run("MERGE (:Site {id: $id})",

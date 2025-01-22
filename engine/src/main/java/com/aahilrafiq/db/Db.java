@@ -3,11 +3,12 @@ package com.aahilrafiq.db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
 import org.neo4j.driver.AuthTokens;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
-import org.neo4j.driver.Session;
-import org.neo4j.driver.Result;
+
+import io.github.cdimascio.dotenv.Dotenv;
 
 public class Db {
 
@@ -17,12 +18,13 @@ public class Db {
     public static Connection getPostgresConnection() {
         if(conn != null) return conn;
         try {
-            String jdbcUrl = "jdbc:postgresql://localhost:5432/search4real";
-            String username = "postgres";
-            String password = "password";
+            Dotenv dotenv = Dotenv.load();
+            String jdbcUrl = dotenv.get("POSTGRES_URI");
+            String username = dotenv.get("POSTGRES_USER");
+            String password = dotenv.get("POSTGRES_PASS");
             conn = DriverManager.getConnection(jdbcUrl,username,password);
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            throw new Error(e);
         }
 
         return conn;
@@ -30,9 +32,10 @@ public class Db {
 
     public static Driver getNeo4jDriver() {
         if(neo4jDriver != null) return neo4jDriver;
-        String uri = "bolt://localhost:7687";
-        String username = "neo4j";
-        String password = "password";
+        Dotenv dotenv = Dotenv.load();
+        String uri = dotenv.get("NEO4j_URI");
+        String username = dotenv.get("NEO4j_USER");
+        String password = dotenv.get("NEO4j_PASS");
 
         try {
             neo4jDriver = GraphDatabase.driver(uri, AuthTokens.basic(username, password));
